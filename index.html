@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-witdth, initial-scale=1.0" />
+
+    <title>Netrunner Mobile Random Card</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        }
+      body {
+        background-color: black;
+        color: grey;
+        font-family: "Courier New";
+        font-size: .75em;
+        }
+      img {
+        max-width: 100%;
+        height: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        }
+      a:link { color: grey; }
+      a:visited { color: grey; }
+      a:hover { color: white; }
+      a:active { color: white; }
+    </style>
+
+  </head>
+
+  <body onload="displayCard()">
+    <div id="card"></div>
+
+    <div id="buttons" style="padding-top: 1rem;">
+
+    </div>
+
+    <div id="footer">
+      <p><center>Inspired by <a href="https://chrome.google.com/webstore/detail/random-netrunner-card/ebclfmmncipkjpnpmbefgcdlnobecgeh">Random Netrunner Card</a> Chrome extension</center></p>
+      <p><center>Uses the public NetrunnerDB <a href="https://netrunnerdb.com/api/2.0/doc">API</a>.</center></p>
+      <p><center>This is still a work-in-progress. Learn more about the project at <a href="http://pawnstorm.net/projects/netrunner-random-card.html">pawnstorm.net/projects/netrunner-random-card.html</a></center></p>
+    </div>
+  </body>
+
+<script>
+
+const cardList = [];
+var altURL = "";
+
+//
+//  get all cards
+// Create a request variable and assign a new HMLHttpRequest object to it.
+var request = new XMLHttpRequest()
+
+// Open a new connection, using the GET request on the URL endpoint
+request.open('GET', 'https://netrunnerdb.com/api/2.0/public/cards', false)
+request.onload = function() {
+  // Begin accessing JSON data here
+  var cards = JSON.parse(this.response)
+  // Some error handling
+  if (request.status >= 200 && request.status < 400) {
+    cards.data.forEach(card => {
+      let aCard = String(card.code);
+      cardList.push(aCard);
+    })
+
+  } else {
+    const errorMessage = document.createElement('marquee')
+    errorMessage.textContent = 'Gah, is not working!'
+    app.appendChild(errorMessage)
+  }
+}
+
+request.send()
+
+  //  cycle through all cards and append ID's to an array
+  //  choose an array element at random
+//  get all packs
+//  get all cycles
+//  filter out all packs from rotated cycles
+//  filter cards to remaining packs
+//  get mwl
+//  filter out banned cards
+//  ?store all legal card codes in an array?
+//  randomly choose legal card and display image
+//  bonus: indicate if card is unicorn
+//
+
+// display the card
+
+// check to see where the card image is
+function checkImage(cardNumber) {
+  var cardRequest = new XMLHttpRequest();
+  var cardRequestURL = 'https://netrunnerdb.com/api/2.0/public/card/' + cardNumber;
+  cardRequest.open('GET', cardRequestURL , false);
+  cardRequest.onload = function() {
+    var cardData = JSON.parse(this.response);
+    if (cardData.data[0].hasOwnProperty('image_url')) {
+      var imageURL = cardData.data[0]['image_url'];
+      altURL = imageURL;
+      return imageURL;
+    } else {
+      var imageURL = 'https://netrunnerdb.com/card_image/' + cardNumber + '.png';
+      altURL = imageURL;
+      return imageURL;
+    }
+  }
+
+  cardRequest.send();
+}
+
+function getRandomCard(cardList) {
+  return cardList[Math.floor(Math.random()*cardList.length)];
+}
+
+const randomCard = getRandomCard(cardList);
+
+const app = document.getElementById('card');
+const cardImg = document.createElement('img');
+var imgURL = checkImage(randomCard);
+console.log('The image URL is: ' + imgURL);
+console.log('The image URL might also be: ' + altURL);
+cardImg.src = altURL;
+
+//  Create a link to the card: https://netrunnerdb.com/en/card/${randomCard}
+
+//app.appendChild(cardImg);
+
+var refreshButton = document.getElementById('new-card');
+refreshButton.onclick = displayNewCard();
+
+function displayCard() {
+  app.innerHTML = '<a href="https://netrunnerdb.com/en/card/' + randomCard + '"><img src="' + altURL + '"></a>'
+}
+
+</script>
