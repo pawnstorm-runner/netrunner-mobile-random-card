@@ -52,7 +52,6 @@
 const cardList = [];
 var altURL = "";
 
-//
 //  get all cards
 // Create a request variable and assign a new HMLHttpRequest object to it.
 var request = new XMLHttpRequest()
@@ -95,7 +94,7 @@ function checkImage(cardNumber) {
       return imageURL;
     }
   }
-
+  // probably isn't working as expected because I need to return imageURL from this function, not just from the cardRequest function
   cardRequest.send();
 }
 
@@ -112,9 +111,6 @@ console.log('The image URL is: ' + imgURL);
 console.log('The image URL might also be: ' + altURL);
 cardImg.src = altURL;
 
-//  Create a link to the card: https://netrunnerdb.com/en/card/${randomCard}
-
-//app.appendChild(cardImg);
 
 var refreshButton = document.getElementById('new-card');
 refreshButton.onclick = displayNewCard();
