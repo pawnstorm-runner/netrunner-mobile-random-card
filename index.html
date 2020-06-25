@@ -33,11 +33,12 @@
 
   </head>
 
-  <body onload="displayCard()">
-    <div id="card"></div>
+  <body>
 
-    <div id="buttons" style="padding-top: 1rem;">
-
+    <div class="card">
+      <a href="https://netrunnerdb.com">
+        <img src="https://netrunnerdb.com/card_image/01051.png">
+      </a>
     </div>
 
     <div id="footer">
@@ -49,14 +50,22 @@
 
 <script>
 
+// define variables
 const cardList = [];
 var altURL = "";
+const LINK = document.querySelector(".card a");
+const CARD = document.querySelector(".card img");
 
-//  get all cards
-// Create a request variable and assign a new HMLHttpRequest object to it.
 var request = new XMLHttpRequest()
 
-// Open a new connection, using the GET request on the URL endpoint
+// update the html to display the card
+function setCard(cardLink) {
+  var dbLink = "https://netrunnerdb.com/en/card/" + cardLink;
+  LINK.setAttribute("href",dbLink);
+  CARD.setAttribute("src","https://netrunnerdb.com/card_image/01050.png");
+}
+
+// grab the entire cardlist
 request.open('GET', 'https://netrunnerdb.com/api/2.0/public/cards', false)
 request.onload = function() {
   // Begin accessing JSON data here
@@ -74,7 +83,6 @@ request.onload = function() {
     app.appendChild(errorMessage)
   }
 }
-
 request.send()
 
 // check to see where the card image is
@@ -104,8 +112,6 @@ function getRandomCard(cardList) {
 
 const randomCard = getRandomCard(cardList);
 
-const app = document.getElementById('card');
-const cardImg = document.createElement('img');
 var imgURL = checkImage(randomCard);
 console.log('The image URL is: ' + imgURL);
 console.log('The image URL might also be: ' + altURL);
@@ -115,8 +121,5 @@ cardImg.src = altURL;
 var refreshButton = document.getElementById('new-card');
 refreshButton.onclick = displayNewCard();
 
-function displayCard() {
-  app.innerHTML = '<a href="https://netrunnerdb.com/en/card/' + randomCard + '"><img src="' + altURL + '"></a>'
-}
 
 </script>
