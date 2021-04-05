@@ -78,7 +78,6 @@ var altURL = "";
 // check to see where the card image is
 function checkImage(cardNumber) {
       var imageURL = 'https://netrunnerdb.com/card_image/large/' + cardNumber + '.jpg';
-      altURL = imageURL;
       return imageURL;
   }
 
@@ -86,15 +85,11 @@ function checkImage(cardNumber) {
 function getRandomCard(cardList) {
   return cardList[Math.floor(Math.random()*cardList.length)];
 }
-
-const randomCard = getRandomCard(cardList);
-
-const app = document.getElementById('card');
+app = document.getElementById('card');
 const cardImg = document.createElement('img');
 var imgURL = checkImage(randomCard);
 console.log('The image URL is: ' + imgURL);
-console.log('The image URL might also be: ' + altURL);
-cardImg.src = altURL;
+cardImg.src = imgURL;
 
 //  Create a link to the card: https://netrunnerdb.com/en/card/${randomCard}
 
@@ -102,9 +97,10 @@ cardImg.src = altURL;
 
 //var refreshButton = document.getElementById('new-card');
 //refreshButton.onclick = displayCard();
-
+window.onbeforeunload = displayCard();
 function displayCard() {
-  app.innerHTML = '<a href="https://netrunnerdb.com/en/card/' + randomCard + '"><img src="' + altURL + '"></a>'
+  console.log("foo")
+  app.innerHTML = '<a target="netrunner" href="https://netrunnerdb.com/en/card/' + randomCard + '"><img src="' + imgURL + '"></a>'
 }
 
 </script>
