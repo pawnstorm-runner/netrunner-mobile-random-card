@@ -85,6 +85,7 @@ function checkImage(cardNumber) {
 function getRandomCard(cardList) {
   return cardList[Math.floor(Math.random()*cardList.length)];
 }
+const randomCard = getRandomCard(cardList)
 app = document.getElementById('card');
 const cardImg = document.createElement('img');
 var imgURL = checkImage(randomCard);
