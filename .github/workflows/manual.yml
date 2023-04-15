@@ -26,6 +26,8 @@ jobs:
       run: |
         sed -i -e '/^const cardList/{n;r cardlist.tmp
         ;d}' index.html
+    - name: clean up
+      run: rm cardlist.tmp
     - name: check in 
       #uses: actions/checkout@v3
       run: |
