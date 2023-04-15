@@ -6,7 +6,9 @@ name: Manual update cardlist
 # or API.
 on: 
   workflow_dispatch:
-
+  schedule:
+    # run daily at 2330 UTC
+    - cron: '30 23 * * *'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
