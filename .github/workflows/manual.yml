@@ -1,0 +1,28 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual update cardlist
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on: 
+  workflow_dispatch:
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "updateCardList"
+  updateCardList:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: pull card list
+      run:  curl https://netrunnerdb.com/api/2.0/public/cards | jq -c ' [ .data[].code ] ' > cardlist.tmp
+    - name: update index.html
+      run: |
+        sed -i -e '/^const cardList/{n;r cardlist.tmp
+        ;d}' random-netrunner-card/index.html
