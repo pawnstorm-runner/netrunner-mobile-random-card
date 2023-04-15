@@ -25,4 +25,4 @@ jobs:
     - name: update index.html
       run: |
         sed -i -e '/^const cardList/{n;r cardlist.tmp
-        ;d}' random-netrunner-card/index.html
+        ;d}' index.html
