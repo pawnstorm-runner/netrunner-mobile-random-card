@@ -22,5 +22,6 @@ jobs:
     - name: pull card list
       run:  curl https://netrunnerdb.com/api/2.0/public/cards | jq -c ' [ .data[].code ] ' > cardlist.tmp
     - name: update index.html
-      run: sed -i -e '/^const cardList/{n;r cardlist.tmp
-;d}' random-netrunner-card/index.html
+      run: |
+        sed -i -e '/^const cardList/{n;r cardlist.tmp
+        ;d}' random-netrunner-card/index.html
