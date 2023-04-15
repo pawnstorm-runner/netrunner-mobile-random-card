@@ -27,7 +27,7 @@ jobs:
         sed -i -e '/^const cardList/{n;r cardlist.tmp
         ;d}' index.html
     - name: check in 
-      uses: actions/checkout@v3
+      #uses: actions/checkout@v3
       run: |
           date > generated.txt
           git config user.name github-actions
